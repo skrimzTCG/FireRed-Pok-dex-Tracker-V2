@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FireRed Accomplishment Tracker</title>
+<style>
+body{
+font-family: Arial;
+background: linear-gradient(135deg,#ff3131,#ff914d);
+color:white;
+text-align:center;
+}
+h1{
+font-size:40px;
+text-shadow:2px 2px black;
+}
+.section{
+background:rgba(0,0,0,0.4);
+margin:20px;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 15px black;
+}
+input[type=checkbox]{
+transform:scale(1.5);
+margin:10px;
+}
+button{
+padding:10px 20px;
+font-size:18px;
+background:yellow;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+.team input{
+margin:5px;
+padding:5px;
+}
+</style>
+</head>
+<body>
+<h1>🔥 Pokémon FireRed Tracker 🔥</h1>
+<div class="section">
+<h2>Gym Progress</h2>
+<label><input type="checkbox" class="save"> Brock</label><br>
+<label><input type="checkbox" class="save"> Misty</label><br>
+<label><input type="checkbox" class="save"> Lt. Surge</label><br>
+<label><input type="checkbox" class="save"> Erika</label><br>
+<label><input type="checkbox" class="save"> Koga</label><br>
+<label><input type="checkbox" class="save"> Sabrina</label><br>
+<label><input type="checkbox" class="save"> Blaine</label><br>
+<label><input type="checkbox" class="save"> Giovanni</label>
+</div>
+<div class="section">
+<h2>Elite Four</h2>
+<label><input type="checkbox" class="save"> Lorelei</label><br>
+<label><input type="checkbox" class="save"> Bruno</label><br>
+<label><input type="checkbox" class="save"> Agatha</label><br>
+<label><input type="checkbox" class="save"> Lance</label><br>
+<label><input type="checkbox" class="save"> Champion</label>
+</div>
+<div class="section">
+<h2>Legendary Captures</h2>
+<label><input type="checkbox" class="save"> Articuno</label><br>
+<label><input type="checkbox" class="save"> Zapdos</label><br>
+<label><input type="checkbox" class="save"> Moltres</label><br>
+<label><input type="checkbox" class="save"> Mewtwo</label>
+</div>
+<div class="section">
+<h2>Important Checklist</h2>
+<label><input type="checkbox" class="save"> Get HM Cut</label><br>
+<label><input type="checkbox" class="save"> Complete Safari Zone</label><br>
+<label><input type="checkbox" class="save"> Wake Snorlax</label><br>
+<label><input type="checkbox" class="save"> Victory Road Complete</label>
+</div>
+<div class="section">
+<h2>Pokédex Progress</h2>
+<input id="dex" type="number" placeholder="How many caught?">
+<button onclick="saveDex()">Save</button>
+<h3 id="dexDisplay"></h3>
+</div>
+<div class="section team">
+<h2>Current Team</h2>
+<input class="teamSave" placeholder="Pokemon 1">
+<input class="teamSave" placeholder="Pokemon 2">
+<input class="teamSave" placeholder="Pokemon 3">
+<input class="teamSave" placeholder="Pokemon 4">
+<input class="teamSave" placeholder="Pokemon 5">
+<input class="teamSave" placeholder="Pokemon 6">
+</div>
+<div class="section">
+<h2>Shiny Log ⭐</h2>
+<input id="shiny" placeholder="Shiny name">
+<button onclick="addShiny()">Add</button>
+<ul id="shinyList"></ul>
+</div>
+<div class="section">
+<h2>Speedrun Timer</h2>
+<h1 id="timer">0</h1>
+<button onclick="start()">Start</button>
+<button onclick="stop()">Stop</button>
+</div>
+<script>
+let timerInt;
+let time=0;
+
+function start(){
+timerInt=setInterval(()=>{
+time++;
+document.getElementById("timer").innerText=time;
+localStorage.setItem("time",time);
+},1000);
+}
+
+function stop(){
+clearInterval(timerInt);
+}
+
+document.querySelectorAll(".save").forEach((box,i)=>{
+box.checked=localStorage.getItem("box"+i)=="true";
+box.onchange=()=>localStorage.setItem("box"+i,box.checked);
+});
+
+function saveDex(){
+let val=document.getElementById("dex").value;
+localStorage.setItem("dex",val);
+loadDex();
+}
+
+function loadDex(){
+let val=localStorage.getItem("dex")||0;
+document.getElementById("dexDisplay").innerText="Caught: "+val+"/151";
+}
+
+document.querySelectorAll(".teamSave").forEach((input,i)=>{
+input.value=localStorage.getItem("team"+i)||"";
+input.oninput=()=>localStorage.setItem("team"+i,input.value);
+});
+
+function addShiny(){
+let name=document.getElementById("shiny").value;
+let list=document.getElementById("shinyList");
+let li=document.createElement("li");
+li.innerText=name;
+list.appendChild(li);
+localStorage.setItem("shinyList",list.innerHTML);
+}
+
+document.getElementById("shinyList").innerHTML=localStorage.getItem("shinyList")||"";
+time=localStorage.getItem("time")||0;
+document.getElementById("timer").innerText=time;
+loadDex();
+</script>
