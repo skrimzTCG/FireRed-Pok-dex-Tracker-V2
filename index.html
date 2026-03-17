@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FireRed Pokédex Tracker</title>
+<style>
+
+body{
+background:black;
+color:#00ffea;
+font-family:Verdana;
+text-align:center;
+}
+
+h1{
+color:red;
+text-shadow:0 0 10px red;
+}
+
+.section{
+border:2px solid #00ffea;
+margin:20px;
+padding:15px;
+border-radius:12px;
+box-shadow:0 0 15px #00ffea;
+}
+
+.badge{
+width:60px;
+margin:10px;
+filter:grayscale(100%);
+transition:0.4s;
+cursor:pointer;
+}
+
+.badge.active{
+filter:grayscale(0%);
+transform:scale(1.2);
+}
+
+.bar{
+width:80%;
+height:20px;
+background:#111;
+margin:auto;
+border-radius:10px;
+}
+
+.fill{
+height:20px;
+background:lime;
+width:0%;
+border-radius:10px;
+transition:0.5s;
+}
+
+button{
+padding:12px 20px;
+margin:10px;
+background:#ff0000;
+border:none;
+border-radius:10px;
+color:white;
+font-size:18px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.15);
+box-shadow:0 0 15px red;
+}
+
+.sprite{
+width:80px;
+margin:5px;
+}
+
+</style>
+</head>
+<body>
+<h1>🔥 FireRed Pokédex Tracker 🔥</h1>
+<div class="section">
+<h2>Gym Badges</h2>
+<img src="https://archives.bulbagarden.net/media/upload/3/3b/Boulder_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/9/9e/Cascade_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/6/6c/Thunder_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/1/1e/Rainbow_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/a/a9/Soul_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/2/24/Marsh_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/8/88/Volcano_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/7/7a/Earth_Badge.png" class="badge">
+</div>
+<div class="section">
+<h2>Pokédex Progress</h2>
+<input id="dex" type="number" placeholder="Caught">
+<button onclick="saveDex()">Save</button>
+<div class="bar">
+<div class="fill" id="dexBar"></div>
+</div>
+<h3 id="dexText"></h3>
+</div>
+<div class="section">
+<h2>Team Sprites</h2>
+<input class="teamInput" placeholder="Pokemon Name">
+<input class="teamInput" placeholder="Pokemon Name">
+<input class="teamInput" placeholder="Pokemon Name">
+<input class="teamInput" placeholder="Pokemon Name">
+<input class="teamInput" placeholder="Pokemon Name">
+<input class="teamInput" placeholder="Pokemon Name">
+<div id="sprites"></div>
+</div>
+<div class="section">
+<h2>Shiny Encounter Counter ⭐</h2>
+<h1 id="encounter">0</h1>
+<button onclick="addEncounter()">Encounter</button>
+</div>
+<script>
+
+document.querySelectorAll(".badge").forEach((badge,i)=>{
+badge.onclick=()=>{
+badge.classList.toggle("active");
+localStorage.setItem("badge"+i,badge.classList.contains("active"));
+document.getElementById("scanSound").play();
+}
+badge.classList.toggle("active",localStorage.getItem("badge"+i)=="true");
+});
+
+function saveDex(){
+let val=document.getElementById("dex").value;
+localStorage.setItem("dex",val);
+updateBar();
+}
+
+function updateBar(){
+let val=localStorage.getItem("dex")||0;
+let percent=(val/151)*100;
+document.getElementById("dexBar").style.width=percent+"%";
+document.getElementById("dexText").innerText=val+" / 151";
+}
+
+function loadSprites(){
+let container=document.getElementById("sprites");
+container.innerHTML="";
+document.querySelectorAll(".teamInput").forEach((input,i)=>{
+localStorage.setItem("team"+i,input.value);
+let name=input.value.toLowerCase();
+let img=document.createElement("img");
+img.className="sprite";
+img.src="https://play.pokemonshowdown.com/sprites/gen5/"+name+".png";
+container.appendChild(img);
+});
+}
+
+let enc=localStorage.getItem("enc")||0;
+document.getElementById("encounter").innerText=enc;
+
+function addEncounter(){
+enc++;
+localStorage.setItem("enc",enc);
+document.getElementById("encounter").innerText=enc;
+document.getElementById("scanSound").play();
+}
+
+updateBar();
+
+</script>
+</body>
+</html>
