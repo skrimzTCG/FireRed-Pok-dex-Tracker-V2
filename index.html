@@ -1,153 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>FireRed Accomplishment Tracker</title>
+<title>FireRed Pokédex Tracker</title>
 <style>
+
 body{
-font-family: Arial;
-background: linear-gradient(135deg,#ff3131,#ff914d);
-color:white;
+background:black;
+color:#00ffea;
+font-family:Verdana;
 text-align:center;
 }
+
 h1{
-font-size:40px;
-text-shadow:2px 2px black;
+color:red;
+text-shadow:0 0 10px red;
 }
+
 .section{
-background:rgba(0,0,0,0.4);
+border:2px solid #00ffea;
 margin:20px;
-padding:20px;
-border-radius:15px;
-box-shadow:0 0 15px black;
+padding:15px;
+border-radius:12px;
+box-shadow:0 0 15px #00ffea;
 }
-input[type=checkbox]{
-transform:scale(1.5);
+
+.badge{
+width:60px;
 margin:10px;
-}
-button{
-padding:10px 20px;
-font-size:18px;
-background:yellow;
-border:none;
-border-radius:10px;
+filter:grayscale(100%);
+transition:0.4s;
 cursor:pointer;
 }
-.team input{
-margin:5px;
-padding:5px;
+
+.badge.active{
+filter:grayscale(0%);
+transform:scale(1.2);
 }
+
+.bar{
+width:80%;
+height:20px;
+background:#111;
+margin:auto;
+border-radius:10px;
+}
+
+.fill{
+height:20px;
+background:lime;
+width:0%;
+border-radius:10px;
+transition:0.5s;
+}
+
+button{
+padding:12px 20px;
+margin:10px;
+background:#ff0000;
+border:none;
+border-radius:10px;
+color:white;
+font-size:18px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.15);
+box-shadow:0 0 15px red;
+}
+
+.sprite{
+width:80px;
+margin:5px;
+}
+
 </style>
 </head>
 <body>
-<h1>🔥 Pokémon FireRed Tracker 🔥</h1>
+<h1>🔥 FireRed Pokédex Tracker 🔥</h1>
 <div class="section">
-<h2>Gym Progress</h2>
-<label><input type="checkbox" class="save"> Brock</label><br>
-<label><input type="checkbox" class="save"> Misty</label><br>
-<label><input type="checkbox" class="save"> Lt. Surge</label><br>
-<label><input type="checkbox" class="save"> Erika</label><br>
-<label><input type="checkbox" class="save"> Koga</label><br>
-<label><input type="checkbox" class="save"> Sabrina</label><br>
-<label><input type="checkbox" class="save"> Blaine</label><br>
-<label><input type="checkbox" class="save"> Giovanni</label>
-</div>
-<div class="section">
-<h2>Elite Four</h2>
-<label><input type="checkbox" class="save"> Lorelei</label><br>
-<label><input type="checkbox" class="save"> Bruno</label><br>
-<label><input type="checkbox" class="save"> Agatha</label><br>
-<label><input type="checkbox" class="save"> Lance</label><br>
-<label><input type="checkbox" class="save"> Champion</label>
-</div>
-<div class="section">
-<h2>Legendary Captures</h2>
-<label><input type="checkbox" class="save"> Articuno</label><br>
-<label><input type="checkbox" class="save"> Zapdos</label><br>
-<label><input type="checkbox" class="save"> Moltres</label><br>
-<label><input type="checkbox" class="save"> Mewtwo</label>
-</div>
-<div class="section">
-<h2>Important Checklist</h2>
-<label><input type="checkbox" class="save"> Get HM Cut</label><br>
-<label><input type="checkbox" class="save"> Complete Safari Zone</label><br>
-<label><input type="checkbox" class="save"> Wake Snorlax</label><br>
-<label><input type="checkbox" class="save"> Victory Road Complete</label>
+<h2>Gym Badges</h2>
+<img src="https://archives.bulbagarden.net/media/upload/3/3b/Boulder_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/9/9e/Cascade_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/6/6c/Thunder_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/1/1e/Rainbow_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/a/a9/Soul_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/2/24/Marsh_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/8/88/Volcano_Badge.png" class="badge">
+<img src="https://archives.bulbagarden.net/media/upload/7/7a/Earth_Badge.png" class="badge">
 </div>
 <div class="section">
 <h2>Pokédex Progress</h2>
-<input id="dex" type="number" placeholder="How many caught?">
+<input id="dex" type="number" placeholder="Caught">
 <button onclick="saveDex()">Save</button>
-<h3 id="dexDisplay"></h3>
+<div class="bar">
+<div class="fill" id="dexBar"></div>
 </div>
-<div class="section team">
-<h2>Current Team</h2>
-<input class="teamSave" placeholder="Pokemon 1">
-<input class="teamSave" placeholder="Pokemon 2">
-<input class="teamSave" placeholder="Pokemon 3">
-<input class="teamSave" placeholder="Pokemon 4">
-<input class="teamSave" placeholder="Pokemon 5">
-<input class="teamSave" placeholder="Pokemon 6">
+<h3 id="dexText"></h3>
 </div>
 <div class="section">
-<h2>Shiny Log ⭐</h2>
-<input id="shiny" placeholder="Shiny name">
-<button onclick="addShiny()">Add</button>
-<ul id="shinyList"></ul>
+<h2>Team Sprites</h2>
+<input class="teamInput" placeholder="Pokemon Name">
+<input class="teamInput" placeholder="Pokemon Name">
+<input class="teamInput" placeholder="Pokemon Name">
+<input class="teamInput" placeholder="Pokemon Name">
+<input class="teamInput" placeholder="Pokemon Name">
+<input class="teamInput" placeholder="Pokemon Name">
+<div id="sprites"></div>
 </div>
 <div class="section">
-<h2>Speedrun Timer</h2>
-<h1 id="timer">0</h1>
-<button onclick="start()">Start</button>
-<button onclick="stop()">Stop</button>
+<h2>Shiny Encounter Counter ⭐</h2>
+<h1 id="encounter">0</h1>
+<button onclick="addEncounter()">Encounter</button>
 </div>
 <script>
-let timerInt;
-let time=0;
 
-function start(){
-timerInt=setInterval(()=>{
-time++;
-document.getElementById("timer").innerText=time;
-localStorage.setItem("time",time);
-},1000);
+document.querySelectorAll(".badge").forEach((badge,i)=>{
+badge.onclick=()=>{
+badge.classList.toggle("active");
+localStorage.setItem("badge"+i,badge.classList.contains("active"));
+document.getElementById("scanSound").play();
 }
-
-function stop(){
-clearInterval(timerInt);
-}
-
-document.querySelectorAll(".save").forEach((box,i)=>{
-box.checked=localStorage.getItem("box"+i)=="true";
-box.onchange=()=>localStorage.setItem("box"+i,box.checked);
+badge.classList.toggle("active",localStorage.getItem("badge"+i)=="true");
 });
 
 function saveDex(){
 let val=document.getElementById("dex").value;
 localStorage.setItem("dex",val);
-loadDex();
+updateBar();
 }
 
-function loadDex(){
+function updateBar(){
 let val=localStorage.getItem("dex")||0;
-document.getElementById("dexDisplay").innerText="Caught: "+val+"/151";
+let percent=(val/151)*100;
+document.getElementById("dexBar").style.width=percent+"%";
+document.getElementById("dexText").innerText=val+" / 151";
 }
 
-document.querySelectorAll(".teamSave").forEach((input,i)=>{
-input.value=localStorage.getItem("team"+i)||"";
-input.oninput=()=>localStorage.setItem("team"+i,input.value);
+function loadSprites(){
+let container=document.getElementById("sprites");
+container.innerHTML="";
+document.querySelectorAll(".teamInput").forEach((input,i)=>{
+localStorage.setItem("team"+i,input.value);
+let name=input.value.toLowerCase();
+let img=document.createElement("img");
+img.className="sprite";
+img.src="https://play.pokemonshowdown.com/sprites/gen5/"+name+".png";
+container.appendChild(img);
 });
-
-function addShiny(){
-let name=document.getElementById("shiny").value;
-let list=document.getElementById("shinyList");
-let li=document.createElement("li");
-li.innerText=name;
-list.appendChild(li);
-localStorage.setItem("shinyList",list.innerHTML);
 }
 
-document.getElementById("shinyList").innerHTML=localStorage.getItem("shinyList")||"";
-time=localStorage.getItem("time")||0;
-document.getElementById("timer").innerText=time;
-loadDex();
+let enc=localStorage.getItem("enc")||0;
+document.getElementById("encounter").innerText=enc;
+
+function addEncounter(){
+enc++;
+localStorage.setItem("enc",enc);
+document.getElementById("encounter").innerText=enc;
+document.getElementById("scanSound").play();
+}
+
+updateBar();
+
+</script>
+</body>
+</html>
